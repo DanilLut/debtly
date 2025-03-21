@@ -1,0 +1,15 @@
+name: debtly
+services:
+  frontend:
+    image: "debtly-frontend"
+    container_name: debtly_frontend
+    ports:
+      - "3006:3005"
+    networks:
+      - debtly_network
+    restart: "unless-stopped"
+
+networks:
+  debtly_network:
+    driver: bridge
+    name: debtly_network

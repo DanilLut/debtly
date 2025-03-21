@@ -10,7 +10,7 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  output: "standalone",
+  output: "export",
   assetPrefix: isProd ? "/debtly/" : "",
   basePath: isProd ? "/debtly" : "",
   distDir: isProd ? "out" : ".next",

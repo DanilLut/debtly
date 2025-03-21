@@ -13,7 +13,7 @@ const nextConfig = {
   output: "standalone",
   assetPrefix: isProd ? "/debtly/" : "",
   basePath: isProd ? "/debtly" : "",
-  buildDir: isProd ? "out" : ".next",
+  distDir: isProd ? "out" : ".next",
   experimental: {
     webpackBuildWorker: true,
     parallelServerBuildTraces: true,

@@ -675,7 +675,7 @@ export const DebtManager = forwardRef<
           </div>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
           {/* Total Transactions Card */}
           <Card className="overflow-hidden hover:shadow-md transition-shadow duration-300">
             <div className="bg-gradient-to-r from-zinc-100 to-zinc-50 dark:from-zinc-900 dark:to-zinc-950 py-3 px-4 border-b border-zinc-200 dark:border-zinc-700">

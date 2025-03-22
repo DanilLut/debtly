@@ -159,7 +159,7 @@ export function DebtTracker() {
     <div className="max-w-6xl mx-auto px-4 py-6">
       <div className="flex flex-col gap-8">
         {/* Enhanced Header Section */}
-        <div className="flex justify-between items-center border-b pb-4">
+        <div className="flex justify-between border-b pb-4 flex-col sm:flex-row items-end">
           <div className="flex flex-col gap-1">
             <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-zinc-800 to-zinc-600 dark:from-zinc-200 dark:to-zinc-400 bg-clip-text text-transparent">
               Debtly

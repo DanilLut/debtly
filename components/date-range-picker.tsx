@@ -71,7 +71,7 @@ export function DateRangePicker({
           onSelect={(range) =>
             onDateRangeChange(range || { from: undefined, to: undefined })
           }
-          numberOfMonths={2}
+          numberOfMonths={1}
           className="p-3"
         />
         <div className="flex justify-end gap-2 p-3 border-t border-border">

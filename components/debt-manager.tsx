@@ -688,7 +688,7 @@ export const DebtManager = forwardRef<
                 <BarChart className="h-5 w-5 text-zinc-500" />
               </div>
               <div>
-                <div className="text-3xl font-bold">{debts.length}</div>
+                <div className="text-xl font-bold">{debts.length}</div>
                 <div className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
                   {debts.length === 1 ? "Transaction" : "Transactions"} recorded
                 </div>
@@ -708,7 +708,7 @@ export const DebtManager = forwardRef<
                 <ArrowDownRight className="h-5 w-5 text-green-600 dark:text-green-400" />
               </div>
               <div>
-                <div className="text-3xl font-bold text-green-600 dark:text-green-400">
+                <div className="text-xl font-bold text-green-600 dark:text-green-400">
                   {formatCurrency(debtStats.totalOutstanding)}
                 </div>
                 <div className="text-xs text-green-600/70 dark:text-green-400/70 mt-1">
@@ -730,7 +730,7 @@ export const DebtManager = forwardRef<
                 <ArrowUpRight className="h-5 w-5 text-red-600 dark:text-red-400" />
               </div>
               <div>
-                <div className="text-3xl font-bold text-red-600 dark:text-red-400">
+                <div className="text-xl font-bold text-red-600 dark:text-red-400">
                   {formatCurrency(debtStats.totalOwed)}
                 </div>
                 <div className="text-xs text-red-600/70 dark:text-red-400/70 mt-1">
@@ -785,7 +785,7 @@ export const DebtManager = forwardRef<
               </div>
               <div>
                 <div
-                  className={`text-3xl font-bold ${
+                  className={`text-xl font-bold ${
                     debtStats.netBalance > 0
                       ? "text-green-600 dark:text-green-400"
                       : debtStats.netBalance < 0

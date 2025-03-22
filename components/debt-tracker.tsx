@@ -56,54 +56,59 @@ export function DebtTracker() {
   }, [people, debts]);
 
   const exportData = (format: "json" | "csv") => {
+    const now = new Date();
+    const formattedDate = now.toISOString().split('T')[0]; // YYYY-MM-DD
+    const formattedTime = now.toTimeString().split(' ')[0].replace(/:/g, '-'); // HH-MM-SS
+
     const data = {
       people,
       debts,
     };
-
+  
     if (format === "json") {
       const jsonString = JSON.stringify(data, null, 2);
       const blob = new Blob([jsonString], { type: "application/json" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = "debt-tracker-data.json";
+      a.download = `debt-tracker-data-${formattedDate}_${formattedTime}.json`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
     } else if (format === "csv") {
-      // Create CSV for debts
       const headers = [
         "ID",
         "Person",
         "Amount",
         "Description",
         "Date",
+        "ExpectedReturnDate",
         "Status",
       ];
       const debtRows = debts.map((debt) => {
         const person = people.find((p) => p.id === debt.personId);
         return [
           debt.id,
-          person?.name || "Unknown",
+          `"${person?.name || "Unknown"}"`,
           debt.amount,
-          debt.description,
+          `"${debt.description}"`,
           debt.date,
+          debt.expectedReturnDate ?? "",
           debt.status,
         ];
       });
-
+  
       const csvContent = [
-        headers.join(","),
+        "\uFEFF" + headers.join(","),
         ...debtRows.map((row) => row.join(",")),
       ].join("\n");
-
-      const blob = new Blob([csvContent], { type: "text/csv" });
+  
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = "debt-tracker-data.csv";
+      a.download = `debt-tracker-data-${formattedDate}_${formattedTime}.csv`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);

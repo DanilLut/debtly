@@ -28,8 +28,7 @@ export function DebtTracker() {
   const [people, setPeople] = useState<Person[]>([]);
   const [debts, setDebts] = useState<Debt[]>([]);
   const [activeTab, setActiveTab] = useState("debts");
-  const [addDebtPersonId, setAddDebtPersonId] = useState<string | null>(null);
-  const [addDebtIsBorrowed, setAddDebtIsBorrowed] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   // Reference to the DebtManager component
   const debtManagerRef = useRef<{
@@ -206,7 +205,7 @@ export function DebtTracker() {
           </div>
 
           {/* Mobile Dropdown */}
-          <DropdownMenu>
+          <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
             <DropdownMenuTrigger asChild className="md:hidden">
               <Button
                 variant="outline"
@@ -226,7 +225,7 @@ export function DebtTracker() {
                 <Download className="h-4 w-4 mr-2" />
                 Export CSV
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
                 <label
                   htmlFor="mobile-import-json"
                   className="flex items-center cursor-pointer w-full"
@@ -238,8 +237,11 @@ export function DebtTracker() {
                   type="file"
                   accept=".json"
                   id="mobile-import-json"
-                  className="hidden"
-                  onChange={importData}
+                  className="absolute inset-0 opacity-0 w-full h-full"
+                  onChange={(event) => {
+                    importData(event);
+                    setIsDropdownOpen(false);
+                  }}
                 />
               </DropdownMenuItem>
             </DropdownMenuContent>

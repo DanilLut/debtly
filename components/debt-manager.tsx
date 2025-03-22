@@ -942,7 +942,7 @@ export const DebtManager = forwardRef<
 
                   {/* Description (only if present) */}
                   {debt.description && (
-                    <div className="bg-zinc-50 dark:bg-zinc-900 rounded px-2.5 py-1.5 mb-2 border border-zinc-100 dark:border-zinc-800 text-sm text-zinc-600 dark:text-zinc-300">
+                    <div className="rounded py-1.5 mb-2 border-zinc-100 dark:border-zinc-800 text-sm text-zinc-600 dark:text-zinc-300">
                       {debt.description}
                     </div>
                   )}

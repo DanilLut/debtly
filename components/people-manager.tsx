@@ -164,8 +164,7 @@ export function PeopleManager({
             className="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white"
             onClick={addPerson}
           >
-            <UserPlus className="h-4 w-4 mr-2" />
-            New Person
+            <UserPlus className="h-4 w-4" />
           </Button>
         </div>
       </div>

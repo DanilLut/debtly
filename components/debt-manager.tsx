@@ -56,6 +56,7 @@ import {
   BarChart,
   Scale,
   Plus,
+  ListX,
 } from "lucide-react";
 import type { Person, Debt, DebtStatus } from "@/lib/types";
 import { formatCurrency, formatDate, isOverdue } from "@/lib/utils";
@@ -125,6 +126,8 @@ export const DebtManager = forwardRef<
     maxAmount: "",
     type: "", // "they-owe" or "you-owe"
     overdue: false, // Filter for overdue debts
+    startDate: "",
+    endDate: "",
   });
   const [sorting, setSorting] = useState({
     field: "date" as keyof Debt | "personName" | "dueDate",
@@ -282,6 +285,16 @@ export const DebtManager = forwardRef<
   const filteredAndSortedDebts = useMemo(() => {
     // First apply filters
     const result = debts.filter((debt) => {
+      // Filter by date range
+      if (filters.startDate && filters.endDate) {
+        const debtDate = new Date(debt.date);
+        const startDate = new Date(filters.startDate);
+        const endDate = new Date(filters.endDate);
+        if (debtDate < startDate || debtDate > endDate) {
+          return false;
+        }
+      }
+
       // Filter by person
       if (filters.personId && debt.personId !== filters.personId) {
         return false;
@@ -425,6 +438,8 @@ export const DebtManager = forwardRef<
               <AlertDialogTrigger asChild>
                 <Button
                   variant="outline"
+                  title="Remove All Settled"
+                  className="bg-gradient-to-r from-red-500 to-rose-600 hover:from-red-600 hover:to-rose-700 text-white"
                   disabled={
                     !debts.some(
                       (debt) =>
@@ -433,7 +448,7 @@ export const DebtManager = forwardRef<
                     )
                   }
                 >
-                  Remove All Settled
+                  <ListX className="h-4 w-4" />
                 </Button>
               </AlertDialogTrigger>
               <AlertDialogContent>
@@ -459,8 +474,7 @@ export const DebtManager = forwardRef<
                   disabled={people.length === 0}
                   className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white"
                 >
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add Transaction
+                  <Plus className="h-4 w-4" />
                 </Button>
               </DialogTrigger>
               <DialogContent>

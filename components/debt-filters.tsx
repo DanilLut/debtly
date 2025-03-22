@@ -1,7 +1,6 @@
 "use client";
 
 import type React from "react";
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -22,6 +21,11 @@ import { Filter, ArrowUpDown, X, AlertCircle } from "lucide-react";
 import type { Person, Debt } from "@/lib/types";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
+import * as Slider from "@radix-ui/react-slider";
+import { formatCurrency } from "@/lib/utils";
+import { Calendar } from "@/components/ui/calendar";
+import { addDays, format } from "date-fns";
+import { DateRangePicker } from "./date-range-picker";
 
 interface DebtFiltersProps {
   people: Person[];
@@ -32,6 +36,8 @@ interface DebtFiltersProps {
     maxAmount: string;
     type: string;
     overdue: boolean;
+    startDate: string;
+    endDate: string;
   };
   setFilters: React.Dispatch<
     React.SetStateAction<{
@@ -41,6 +47,8 @@ interface DebtFiltersProps {
       maxAmount: string;
       type: string;
       overdue: boolean;
+      startDate: string;
+      endDate: string;
     }>
   >;
   sorting: {
@@ -66,6 +74,19 @@ export function DebtFilters({
 }: DebtFiltersProps) {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isSortOpen, setIsSortOpen] = useState(false);
+  const [dateRange, setDateRange] = useState<{ from?: Date; to?: Date }>({
+    from: undefined,
+    to: undefined,
+  });
+
+  const handleDateRangeChange = (range: { from?: Date; to?: Date }) => {
+    setDateRange(range);
+    setFilters({
+      ...filters,
+      startDate: range.from ? format(range.from, "yyyy-MM-dd") : "",
+      endDate: range.to ? format(range.to, "yyyy-MM-dd") : "",
+    });
+  };
 
   const resetFilters = () => {
     setFilters({
@@ -75,7 +96,11 @@ export function DebtFilters({
       maxAmount: "",
       type: "",
       overdue: false,
+      startDate: "",
+      endDate: "",
     });
+
+    setDateRange({ from: undefined, to: undefined });
   };
 
   const hasActiveFilters =
@@ -84,7 +109,22 @@ export function DebtFilters({
     filters.minAmount ||
     filters.maxAmount ||
     filters.type ||
-    filters.overdue;
+    filters.overdue ||
+    filters.startDate ||
+    filters.endDate;
+
+  // Convert min and max amounts to numbers for the slider
+  const minAmount = parseFloat(filters.minAmount) || 0;
+  const maxAmount = parseFloat(filters.maxAmount) || 1000; // Default max value
+
+  // Handle slider value change
+  const handleSliderChange = (values: number[]) => {
+    setFilters({
+      ...filters,
+      minAmount: values[0].toString(),
+      maxAmount: values[1].toString(),
+    });
+  };
 
   return (
     <div className="flex flex-wrap gap-2 items-center justify-between">
@@ -127,7 +167,10 @@ export function DebtFilters({
                   <Select
                     value={filters.type}
                     onValueChange={(value) =>
-                      setFilters({ ...filters, type: value })
+                      setFilters({
+                        ...filters,
+                        type: value === "all_types" ? "" : value, // Clear the filter when "All types" is selected
+                      })
                     }
                   >
                     <SelectTrigger id="filter-type">
@@ -146,7 +189,10 @@ export function DebtFilters({
                   <Select
                     value={filters.personId}
                     onValueChange={(value) =>
-                      setFilters({ ...filters, personId: value })
+                      setFilters({
+                        ...filters,
+                        personId: value === "all_people" ? "" : value,
+                      })
                     }
                   >
                     <SelectTrigger id="filter-person">
@@ -168,7 +214,10 @@ export function DebtFilters({
                   <Select
                     value={filters.status}
                     onValueChange={(value) =>
-                      setFilters({ ...filters, status: value })
+                      setFilters({
+                        ...filters,
+                        status: value === "all_statuses" ? "" : value,
+                      })
                     }
                   >
                     <SelectTrigger id="filter-status">
@@ -192,34 +241,34 @@ export function DebtFilters({
                   </Select>
                 </div>
 
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="grid gap-1">
-                    <Label htmlFor="min-amount">Min Amount</Label>
-                    <Input
-                      id="min-amount"
-                      type="number"
-                      min="0"
-                      step="0.01"
-                      placeholder="Min"
-                      value={filters.minAmount}
-                      onChange={(e) =>
-                        setFilters({ ...filters, minAmount: e.target.value })
-                      }
-                    />
-                  </div>
-                  <div className="grid gap-1">
-                    <Label htmlFor="max-amount">Max Amount</Label>
-                    <Input
-                      id="max-amount"
-                      type="number"
-                      min="0"
-                      step="0.01"
-                      placeholder="Max"
-                      value={filters.maxAmount}
-                      onChange={(e) =>
-                        setFilters({ ...filters, maxAmount: e.target.value })
-                      }
-                    />
+                <div className="grid gap-2">
+  <Label>Date Range</Label>
+  <DateRangePicker
+    dateRange={dateRange}
+    onDateRangeChange={handleDateRangeChange}
+  />
+</div>
+
+                {/* Range Slider for Min and Max Amount */}
+                <div className="grid gap-2">
+                  <Label>Amount Range</Label>
+                  <Slider.Root
+                    className="relative flex items-center select-none touch-none w-full h-5"
+                    value={[minAmount, maxAmount]}
+                    min={0}
+                    max={1000} // Set your desired max value
+                    step={1}
+                    onValueChange={handleSliderChange}
+                  >
+                    <Slider.Track className="bg-zinc-100 dark:bg-zinc-800 relative grow rounded-full h-1">
+                      <Slider.Range className="absolute bg-zinc-500 dark:bg-zinc-600 rounded-full h-full" />
+                    </Slider.Track>
+                    <Slider.Thumb className="block w-5 h-5 bg-white dark:bg-zinc-900 shadow-lg rounded-full focus:outline-none focus:ring-2 focus:ring-zinc-500" />
+                    <Slider.Thumb className="block w-5 h-5 bg-white dark:bg-zinc-900 shadow-lg rounded-full focus:outline-none focus:ring-2 focus:ring-zinc-500" />
+                  </Slider.Root>
+                  <div className="flex justify-between text-sm text-zinc-500 dark:text-zinc-400">
+                    <span>{formatCurrency(minAmount)}</span>
+                    <span>{formatCurrency(maxAmount)}</span>
                   </div>
                 </div>
 

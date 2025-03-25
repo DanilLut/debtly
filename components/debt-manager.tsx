@@ -2,33 +2,7 @@
 
 import type React from "react";
 
-import { useState, useMemo, forwardRef, useImperativeHandle } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { DebtFilters } from "@/components/debt-filters";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -41,34 +15,54 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
-  Trash2,
-  Edit,
-  Calendar,
-  AlertCircle,
-  Clock,
-  Check,
-  X,
-  CreditCard,
-  ArrowDownRight,
-  ArrowUpRight,
-  BarChart,
-  Scale,
-  Plus,
-  ListX,
-} from "lucide-react";
-import type { Person, Debt, DebtStatus } from "@/lib/types";
-import { formatCurrency, formatDate, isOverdue } from "@/lib/utils";
-import { DebtFilters } from "@/components/debt-filters";
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Checkbox } from "@/components/ui/checkbox";
+import type { Debt, DebtStatus, Person } from "@/lib/types";
+import { formatCurrency, formatDate, isOverdue } from "@/lib/utils";
+import {
+  AlertCircle,
+  ArrowDownRight,
+  ArrowUpRight,
+  BarChart,
+  Calendar,
+  Check,
+  Clock,
+  CreditCard,
+  Edit,
+  ListX,
+  Plus,
+  Scale,
+  Trash2,
+  X,
+} from "lucide-react";
+import { forwardRef, useImperativeHandle, useMemo, useState } from "react";
 
 interface DebtManagerProps {
   people: Person[];
@@ -910,15 +904,6 @@ export const DebtManager = forwardRef<
                     <div className="flex items-baseline gap-2">
                       <span className="text-xl font-bold">
                         {formatCurrency(debt.amount)}
-                      </span>
-                      <span
-                        className={`text-xs font-medium ${
-                          isTheyOwe
-                            ? "text-green-600 dark:text-green-400"
-                            : "text-red-600 dark:text-red-400"
-                        }`}
-                      >
-                        {isTheyOwe ? "+ Income" : "- Expense"}
                       </span>
                     </div>
 

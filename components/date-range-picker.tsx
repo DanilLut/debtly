@@ -22,7 +22,7 @@ export function DateRangePicker({
   className,
 }: DateRangePickerProps) {
   const [open, setOpen] = React.useState(false);
-  
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -31,7 +31,7 @@ export function DateRangePicker({
           className={cn(
             "w-full justify-start text-left font-normal",
             !dateRange.from && "text-muted-foreground",
-            className
+            className,
           )}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
@@ -48,7 +48,7 @@ export function DateRangePicker({
             <span>Pick a date range</span>
           )}
           {(dateRange.from || dateRange.to) && (
-            <X 
+            <X
               className="ml-auto h-4 w-4 opacity-70 hover:opacity-100"
               onClick={(e) => {
                 e.stopPropagation();
@@ -78,16 +78,14 @@ export function DateRangePicker({
           <Button
             variant="outline"
             size="sm"
-            onClick={() => onDateRangeChange({ from: undefined, to: undefined })}
+            onClick={() =>
+              onDateRangeChange({ from: undefined, to: undefined })
+            }
             className="text-xs"
           >
             Clear
           </Button>
-          <Button
-            size="sm"
-            onClick={() => setOpen(false)}
-            className="text-xs"
-          >
+          <Button size="sm" onClick={() => setOpen(false)} className="text-xs">
             Apply
           </Button>
         </div>

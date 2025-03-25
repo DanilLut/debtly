@@ -242,12 +242,12 @@ export function DebtFilters({
                 </div>
 
                 <div className="grid gap-2">
-  <Label>Date Range</Label>
-  <DateRangePicker
-    dateRange={dateRange}
-    onDateRangeChange={handleDateRangeChange}
-  />
-</div>
+                  <Label>Date Range</Label>
+                  <DateRangePicker
+                    dateRange={dateRange}
+                    onDateRangeChange={handleDateRangeChange}
+                  />
+                </div>
 
                 {/* Range Slider for Min and Max Amount */}
                 <div className="grid gap-2">
